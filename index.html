@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>See It All Status Maintain</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        @media screen {
+            #reportDetails,#summaryDetails {
+                font-family: Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                text-align: center;
+            }
+            #reportDetails{
+                width: 100%;
+            }
+            #reportDetails td, #reportDetails th ,#summaryDetails th,#summaryDetails tr{
+                border: 1px solid #ddd;
+                padding: 8px;
+            }
+            #reportDetails tr:nth-child(even){background-color: #f2f2f2;}
+            #reportDetails tr:hover {background-color: #ddd;}
+            #reportDetails th, #summaryDetails th {
+                padding-top: 12px;
+                padding-bottom: 12px;
+                color: white;
+            }
+            #summaryDetails th{
+                background-color: #0984e3;
+            }
+            #reportDetails th{
+                background-color: #04AA6D;
+            }
+        }
+        @media print{
+            #workDetails{
+                display: none;
+            }
+            #reportDetails,#summaryDetails {
+                font-family: Arial, Helvetica, sans-serif;
+                border-collapse: collapse;
+                text-align: center;
+            }
+            #reportDetails{
+                width: 100%;
+            }
+            #summaryDetails{
+                width: 50%;
+                margin-bottom: 10px;
+            }
+            #reportDetails td, #reportDetails th, #summaryDetails td,#summaryDetails th{
+                border: 1px solid; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div id="shiftDetails">
+            <h3>Please Select your shift</h3>
+            <form onsubmit="return initialShiftSelection()" id="shiftSelectionForm">
+                <label for="shiftName">Kindly Select your Shift</label>
+                <select name="shiftName" id="shiftName">
+                    <option value="Normal Shift">Normal Shift</option>
+                    <option value="Afternoon Shift">Afternoon Shift</option>
+                    <option value="Night Shift">Night Shift</option>
+                </select>
+                <input type="submit" value="Submit"/>
+            </form>
+            <hr/>
+        </div>
+        <div id="workDetails">
+            <h2>Enter Details of Current Stage</h2>
+            <form id="formForWorkDetails" onsubmit="return addWork()">
+                <label for="typeOfJob">Kindly Select the Type of Job Assigned</label>
+                <select name="typeOfJob" id="typeOfJob" onchange="checkCount()">
+                    <option value="Scan Gap 1">Scan Gap 1</option>
+                    <option value="Scan Gap 2">Scan Gap 2</option>
+                    <option value="TC">Any Type Of TC</option>
+                </select><br/><br/>
+                <label for="reviewerCount">Kindly Enter The Count Shown in Reviewer</label>
+                <input type="number" name="reviewerCount" id="reviewerCount" min="0" placeholder="Enter Current Count" required/>
+                <input type="submit" value="Add To Records">
+            </form>
+            <hr/>
+        </div>
+        <div id="liveReport">
+            <div id="basicDetails"></div>
+            <table id="summaryDetails">
+                
+                <thead>
+                    <tr>
+                        <th>Scan Gap 1</th>
+                        <th>Scan Gap 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="sg1Count"></td>
+                        <td id="sg2Count"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="reportDetails">
+                <thead>
+                    <tr>
+                        <th>Time From</th>
+                        <th>Time To</th>
+                        <th>Type Of Job</th>
+                        <th>Reviewer Count</th>
+                        <th>Time Span Count</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="helloWorld"></div>
+    </main>
+    <script src="/jsScript.js"></script>
+</body>
+</html>

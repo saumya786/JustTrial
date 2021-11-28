@@ -163,6 +163,10 @@ function generateCSV(csv_data){
     tempLink.style.display= "none";
     tempLink.click();
 }
+/***
+ * This function is maily working to generate the file name based on the shift details entered prior
+ * @returns The Generated File Name
+ */
 function generateFileName(){
     let currentTime= new Date();
     let finalString= "SIAReport_"+currentTime.getFullYear()+"-"+(currentTime.getMonth()+1)+"-"+currentTime.getDate()+"_"+currentTime.getHours()+"-"+currentTime.getMinutes()+"-"+currentTime.getSeconds()+"_"+typeOfShift.replace(/ /g,'_')+".csv";

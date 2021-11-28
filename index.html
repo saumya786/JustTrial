@@ -37,7 +37,7 @@
             }
         }
         @media print{
-            #workDetails{
+            #workDetails,#downloadOptions{
                 display: none;
             }
             #reportDetails,#summaryDetails {
@@ -91,7 +91,6 @@
         <div id="liveReport">
             <div id="basicDetails"></div>
             <table id="summaryDetails">
-                
                 <thead>
                     <tr>
                         <th>Scan Gap 1</th>
@@ -105,6 +104,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div id="downloadOptions">
+                <h3>Report Downloads</h3>
+                <button onclick="generateReport()">Generate Report</button>
+                <button onclick="" disabled>Download Report</button>
+            </div>
             <table id="reportDetails">
                 <thead>
                     <tr>

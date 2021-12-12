@@ -83,7 +83,10 @@
                     <option value="TC">Any Type Of TC</option>
                 </select><br/><br/>
                 <label for="reviewerCount">Kindly Enter The Count Shown in Reviewer</label>
-                <input type="number" name="reviewerCount" id="reviewerCount" min="0" placeholder="Enter Current Count" required/>
+                <input type="number" name="reviewerCount" id="reviewerCount" min="0" placeholder="Enter Current Count" required/><br/><br/>
+                <label>Did reviewer crashed before adding this record</label>
+                <input type="radio" name="reviewerStatus" id="reviewerCrashed" value="reviewerCrashed"/><label for="reviewerCrashed">Yes</label>
+                <input type="radio" name="reviewerStatus" id="reviewerCrashed" value="reviewerIntact" checked/><label for="reviewerIntact">No</label><br/>
                 <input type="submit" value="Add To Records">
             </form>
             <hr/>

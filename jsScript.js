@@ -37,6 +37,15 @@ function initializeSystem(){
     totalDataCaption.appendChild(document.createTextNode(textNode.replace("Report For","Total Data of")));
     let summaryDataTable= document.getElementById("summaryDetails");
     summaryDataTable.insertBefore(totalDataCaption,summaryDataTable.childNodes[0]);
+    const options= {weekday: 'long',year:'numeric',month: 'short', day:'numeric'};
+    document.title= 'SIA - Report For '+currentTimeStamp.toLocaleDateString('en-us',options)+" "+typeOfShift;
+    if(typeOfShift!='Normal Shift'){//Incase the shift is not morning
+        let selectMenu= document.getElementById('typeOfJob');
+        let rtOption= document.createElement('option');
+        rtOption.text= "Real Time";
+        rtOption.value= "Real Time";
+        selectMenu.add(rtOption);
+    }
 }
 /***
  * Changes the date entry object to CSV Readable Format
@@ -58,12 +67,19 @@ function addWork(){
     let reviewerCount= formDetails.get('reviewerCount');
     let currentWorkCount;
     let reviewerCrash= false;
+    let reviwerCrashInput= (formDetails.get('reviewerStatus')=='reviewerCrashed')?true:false;
     previousTimeStamp= currentTimeStamp;
     currentTimeStamp= new Date();
     switch(typeOfJob){
         case "Scan Gap 1":
             currentWorkCount= reviewerCount-sg1CountCurrent;
-            if(currentWorkCount<=0){
+            if(reviwerCrashInput){
+                sg1CountCurrent= reviewerCount;
+                sg1TotalCount= sg1TotalCount+parseInt(reviewerCount);
+                currentWorkCount= reviewerCount;
+                reviewerCrash= true;
+            }
+            else if(currentWorkCount<=0){
                 reviewerCrash= confirm("The count entered is the less than the previous input Count\nHas The Reviewer crashed ?\nPlease enter the restoration time\nPress Ok to Confirm otherwise press cancel to discard");
                 if(reviewerCrash==false)
                     return false;
@@ -80,13 +96,20 @@ function addWork(){
         break;
         case "Scan Gap 2":
             currentWorkCount= reviewerCount-sg2CountCurrent;
-            if(currentWorkCount<=0){
+            if(reviwerCrashInput){//This part checks whether the reviewer crashed
+                sg2CountCurrent= reviewerCount;
+                sg2TotalCount= sg2TotalCount+parseInt(reviewerCount);//Fixed this part
+                currentWorkCount= reviewerCount;
+                reviewerCrash= true;
+            }
+            else if(currentWorkCount<=0){
                 reviewerCrash= confirm("The count entered is the less than the previous input Count\nHas The Reviewer crashed ?\nPlease enter the restoration time\nPress Ok to Confirm otherwise press cancel to discard");
                 if(reviewerCrash==false)
                     return false;
                 else{
                     sg2CountCurrent= reviewerCount;
-                    sg2TotalCount= sg2TotalCount+parseInt(reviewerCount);
+                    sg2TotalCount= sg2TotalCount+parseInt(reviewerCount);//Fixed this part
+                    currentWorkCount= reviewerCount;
                 }
             }
             else{
@@ -104,6 +127,10 @@ function addWork(){
         row.insertCell().appendChild(document.createTextNode("Refer To Script Data"));
         row.insertCell().appendChild(document.createTextNode("Refer To Script Data"));
     }
+    else if(typeOfJob=='Real Time'){//This option is mainly for Real Time
+        row.insertCell().appendChild(document.createTextNode("Not Applicable"));
+        row.insertCell().appendChild(document.createTextNode("Not Applicable"));
+    }
     else{
         row.insertCell().appendChild(document.createTextNode(reviewerCount));
         row.insertCell().appendChild(document.createTextNode(currentWorkCount));
@@ -118,6 +145,7 @@ function addWork(){
     let cellForSG2Count= document.getElementById('sg2Count');
     cellForSG1Count.innerText= sg1TotalCount;
     cellForSG2Count.innerText= sg2TotalCount;
+    document.getElementById('reviewerCount').disabled= false;
     return false;
 }
 /***
@@ -125,7 +153,7 @@ function addWork(){
  */
 function checkCount(){
     let valueOfSelection= document.getElementById('typeOfJob').value;
-    if(valueOfSelection=="TC")
+    if((valueOfSelection=="TC")||(valueOfSelection=='Real Time'))
         document.getElementById('reviewerCount').disabled= true;
     else
         document.getElementById('reviewerCount').disabled= false;

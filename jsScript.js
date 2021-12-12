@@ -158,3 +158,45 @@ function checkCount(){
     else
         document.getElementById('reviewerCount').disabled= false;
 }
+/***
+ * This function is mainly used for generating the CSV File from the given records
+ */
+function generateReport(){
+    const table1= document.getElementById('reportDetails');
+    let rows= table1.getElementsByTagName('tr');
+    if(rows.length==1)
+        alert('No Records Found To Download');
+    else{
+        let csv_data= [];
+        for(let i= 0;i<rows.length;i++){
+            let cols= rows[i].querySelectorAll('td,th');
+            let csv_row= [];
+            for(let j= 0;j<cols.length;j++)
+                csv_row.push(cols[j].innerHTML);
+            csv_data.push(csv_row.join(","));
+        }
+        csv_final_string= csv_data.join("\n");
+        generateCSV(csv_final_string);
+    }
+}
+/***
+ * This function is creating the csv file for download
+ */
+function generateCSV(csv_data){
+    CSVFile= new Blob([csv_data],{type: "text/csv"});
+    let tempLink= document.createElement('a');
+    tempLink.download= generateFileName();
+    let url= window.URL.createObjectURL(CSVFile);
+    tempLink.href= url;
+    tempLink.style.display= "none";
+    tempLink.click();
+}
+/***
+ * This function is maily working to generate the file name based on the shift details entered prior
+ * @returns The Generated File Name
+ */
+function generateFileName(){
+    let currentTime= new Date();
+    let finalString= "SIAReport_"+currentTime.getFullYear()+"-"+(currentTime.getMonth()+1)+"-"+currentTime.getDate()+"_"+currentTime.getHours()+"-"+currentTime.getMinutes()+"-"+currentTime.getSeconds()+"_"+typeOfShift.replace(/ /g,'_')+".csv";
+    return finalString;
+}

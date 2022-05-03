@@ -4,6 +4,7 @@ var previousTimeStamp= new Date();
 var sg1CountCurrent= 0,sg2CountCurrent= 0,sg1TotalCount= 0,sg2TotalCount= 0;
 document.getElementById('workDetails').style.display= 'none';
 document.getElementById('liveReport').style.display= 'none';
+const breakValue= "Break";
 /***
  * This function is getting used for reading the initial shift details from the user
  * @returns false always to prevent submission of the form
@@ -39,8 +40,12 @@ function initializeSystem(){
     summaryDataTable.insertBefore(totalDataCaption,summaryDataTable.childNodes[0]);
     const options= {weekday: 'long',year:'numeric',month: 'short', day:'numeric'};
     document.title= 'SIA - Report For '+currentTimeStamp.toLocaleDateString('en-us',options)+" "+typeOfShift;
+    let selectMenu= document.getElementById('typeOfJob');
+    let optionForBreak= document.createElement('option');
+    optionForBreak.text= breakValue;
+    optionForBreak.value= breakValue;
+    selectMenu.add(optionForBreak);
     if(typeOfShift!='Normal Shift'){//Incase the shift is not morning
-        let selectMenu= document.getElementById('typeOfJob');
         let rtOption= document.createElement('option');
         rtOption.text= "Real Time";
         rtOption.value= "Real Time";
@@ -127,7 +132,7 @@ function addWork(){
         row.insertCell().appendChild(document.createTextNode("Refer To Script Data"));
         row.insertCell().appendChild(document.createTextNode("Refer To Script Data"));
     }
-    else if(typeOfJob=='Real Time'){//This option is mainly for Real Time
+    else if((typeOfJob=='Real Time')||(typeOfJob==breakValue)){//This option is mainly for Real Time
         row.insertCell().appendChild(document.createTextNode("Not Applicable"));
         row.insertCell().appendChild(document.createTextNode("Not Applicable"));
     }
@@ -153,7 +158,7 @@ function addWork(){
  */
 function checkCount(){
     let valueOfSelection= document.getElementById('typeOfJob').value;
-    if((valueOfSelection=="TC")||(valueOfSelection=='Real Time'))
+    if((valueOfSelection=="TC")||(valueOfSelection=='Real Time')||(valueOfSelection==breakValue))
         document.getElementById('reviewerCount').disabled= true;
     else
         document.getElementById('reviewerCount').disabled= false;
